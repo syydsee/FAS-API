@@ -11,6 +11,7 @@ const health = async(req, res)=>{
         await mongoose.connect(config.dbConStr)
         res.status(201);
         res.json({db:'Up'}); 
+        mongoose.connection.close();
     }catch(e){
         res.status(500);
         res.send('Internal Server Error');
