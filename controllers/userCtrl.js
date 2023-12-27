@@ -26,4 +26,16 @@ const register = async(req,res) => {
     }
 };
 
-module.exports = {register};
+const update = async (req, res) => {
+    try{
+        const email = req.params.email;
+        await userRepository.update(email, req.body);
+
+        res.status(204);
+        res.send();
+    }catch (e) {
+        res.status(500).send('Insternal Server Error');
+    }
+}
+
+module.exports = {register, update};

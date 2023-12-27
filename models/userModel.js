@@ -33,7 +33,7 @@ const userModel = mongoose.model('user',{
     skills: [String],
     passout: Number,
     createdAt: Date,
-    updatedAt: {type:Date, default: Date.now }
+    updatedAt: {type:Date, default: Date.now() }
 
 });
 
