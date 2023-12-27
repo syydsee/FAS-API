@@ -24,4 +24,10 @@ const update= (email, data) => {
     });
 };
 
-module.exports = {add, update};
+const getUsers = () => {
+    const projection = {__v: 0,_id: 0, password: 0};
+    const filter = {};
+    return UserModel.find(filter, projection);
+}
+
+module.exports = {add, update, getUsers};
