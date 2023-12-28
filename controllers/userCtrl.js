@@ -40,13 +40,35 @@ const update = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const users = await userRepository.getUsers();
+        const pageIndex = +req.params.page;
+        const pageSize = +req.params.size;
+        const totalRecords = await userRepository.getUserCount();
+        const toatlPages = Math.ceil(totalRecords/pageSize); 
+        const users = await userRepository.getUsers(pageIndex, pageSize);
+
+        const response = {
+            data: users,
+            metadata: {
+                totalRecords: totalRecords,
+                toatlPages: toatlPages
+            }
+        };
 
         res.status(200);
-        res.json(users);
+        res.json(response);
     }catch (e) {
         res.status(500).send('Internal Server Error');
     }
 }
 
-module.exports = {register, update, getUsers};
+const getUserByEmail = (req, res) => {
+    userRepository.getUserByEmail(req.params.email)
+        .then(user => res.status(200).json(user))
+        .catch(err => res.status(500).send('Internal server Error'))
+}
+
+module.exports = {
+    register, 
+    update, 
+    getUsers, 
+    getUserByEmail};

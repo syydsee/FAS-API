@@ -24,10 +24,30 @@ const update= (email, data) => {
     });
 };
 
-const getUsers = () => {
+const getUsers = (pageIndex, pageSize) => {
     const projection = {__v: 0,_id: 0, password: 0};
     const filter = {};
-    return UserModel.find(filter, projection);
+    const skipRows = pageIndex * pageSize;
+    return UserModel.find(filter, projection)
+        .skip(skipRows)
+        .limit(pageSize);
 }
 
-module.exports = {add, update, getUsers};
+const getUserByEmail = (email) => {
+    const projection = {__v: 0,_id: 0, password: 0};
+    const filter = {email}
+    return UserModel.findOne(filter, projection);
+}
+
+const getUserCount = () => {
+    return UserModel.count();
+    
+}
+
+module.exports = {
+    add, 
+    update, 
+    getUsers, 
+    getUserByEmail,
+    getUserCount
+};
